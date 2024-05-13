@@ -2,15 +2,17 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quran_app/data/models/detail_surah.dart';
-import 'package:quran_app/data/models/surah.dart';
+import 'package:quran_app/models/detail_surah.dart';
+import 'package:quran_app/models/surah.dart';
 import 'package:quran_app/pages/Details/controllers/detail_controller.dart';
+import 'package:quran_app/pages/Home/controllers/home_controller.dart';
 import 'package:quran_app/themes/colors.dart';
 
 class DetailScreen extends StatelessWidget {
   DetailScreen({super.key});
 
   final detailcontroller = Get.put(DetailController());
+  final homeController = Get.find<HomeController>();
 
   final Surah surah = Get.arguments;
 
@@ -62,170 +64,42 @@ class DetailScreen extends StatelessWidget {
     );
   }
 
-  Padding _ayatItem(DetailSurah detailSurah, int index, BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+  AppBar _appBar(
+      {required BuildContext context, required DetailSurah detailSurah}) {
+    return AppBar(
+      backgroundColor: background,
+      automaticallyImplyLeading: false,
+      elevation: 0,
+      title: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            decoration: BoxDecoration(
-              color: bottom,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 27,
-                  height: 27,
-                  decoration: BoxDecoration(
-                    color: primary,
-                    borderRadius: BorderRadius.circular(27 / 2),
-                  ),
-                  child: Center(
-                    child: Text(
-                      '${detailSurah.ayat[index].nomorAyat}',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w600,
-                        color: white,
-                      ),
-                    ),
-                  ),
-                ),
-                const Spacer(),
-                InkWell(
-                  onTap: () {},
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: SvgPicture.asset('assets/svg/share-icon.svg'),
-                  ),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: SvgPicture.asset('assets/svg/play-icon.svg'),
-                  ),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                InkWell(
-                  onTap: () {
-                    _showBookmarkDialog(context, detailSurah, index);
-                  },
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: SvgPicture.asset('assets/svg/bookmark2-icon.svg'),
-                  ),
-                ),
-              ],
+          IconButton(
+            onPressed: () => Get.back(),
+            icon: const Icon(
+              Icons.arrow_back,
+              size: 28,
             ),
           ),
           const SizedBox(
-            height: 24,
+            width: 24,
           ),
           Text(
-            detailSurah.ayat[index].teksArab,
-            style: GoogleFonts.amiri(
-              color: text,
+            detailSurah.namaLatin,
+            style: GoogleFonts.poppins(
+              fontSize: 20,
               fontWeight: FontWeight.bold,
-              fontSize: 18,
+              color: text,
             ),
-            textAlign: TextAlign.right,
           ),
-          const SizedBox(
-            height: 16,
-          ),
-          Text(
-            detailSurah.ayat[index].teksLatin,
-            style: GoogleFonts.poppins(
-              color: primary,
-              fontSize: 16,
-            ),
-            textAlign: TextAlign.right,
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Text(
-            detailSurah.ayat[index].teksIndonesia,
-            style: GoogleFonts.poppins(
-              color: primary,
-              fontSize: 16,
+          const Spacer(),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.search,
+              size: 28,
             ),
           ),
         ],
       ),
-    );
-  }
-
-  void _showBookmarkDialog(
-      BuildContext context, DetailSurah detailSurah, int index) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: bottom,
-          title: Text(
-            'BOOKMARK',
-            style:
-                GoogleFonts.poppins(color: text, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                "Tambahkan Catatan",
-                style: GoogleFonts.poppins(
-                    color: primary, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(height: 14),
-              TextFormField(
-                controller: detailcontroller.nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Catatan',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(orange)),
-              onPressed: () {
-                // detailcontroller.addBookmark(true, detailSurah, index);
-              },
-              child: Text(
-                'Last Read',
-                style: GoogleFonts.poppins(
-                    color: text, fontWeight: FontWeight.w500),
-              ),
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(orange)),
-              onPressed: () {
-                // detailcontroller.addBookmark(false, detailSurah, index);
-              },
-              child: Text(
-                'Add Note',
-                style: GoogleFonts.poppins(
-                    color: text, fontWeight: FontWeight.w500),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 
@@ -325,38 +199,160 @@ class DetailScreen extends StatelessWidget {
     );
   }
 
-  AppBar _appBar(
-      {required BuildContext context, required DetailSurah detailSurah}) {
-    return AppBar(
-      backgroundColor: background,
-      automaticallyImplyLeading: false,
-      elevation: 0,
-      title: Row(
+  Padding _ayatItem(DetailSurah detailSurah, int index, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: SvgPicture.asset('assets/svg/back-icon.svg'),
-          ),
-          const SizedBox(
-            width: 24,
-          ),
-          Text(
-            detailSurah.namaLatin,
-            style: GoogleFonts.poppins(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: text,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(
+              color: bottom,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 27,
+                  height: 27,
+                  decoration: BoxDecoration(
+                    color: primary,
+                    borderRadius: BorderRadius.circular(27 / 2),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '${detailSurah.ayat[index].nomorAyat}',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w600,
+                        color: white,
+                      ),
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                InkWell(
+                  onTap: () {},
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: SvgPicture.asset('assets/svg/play-icon.svg'),
+                  ),
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+                InkWell(
+                  onTap: () {
+                    _showBookmarkDialog(context, detailSurah, index);
+                  },
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: SvgPicture.asset('assets/svg/bookmark2-icon.svg'),
+                  ),
+                ),
+              ],
             ),
           ),
-          const Spacer(),
-          IconButton(
-            onPressed: () {},
-            icon: SvgPicture.asset('assets/svg/search-icon.svg'),
+          const SizedBox(
+            height: 24,
+          ),
+          Text(
+            detailSurah.ayat[index].teksArab,
+            style: GoogleFonts.amiri(
+              color: text,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+            textAlign: TextAlign.right,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Text(
+            detailSurah.ayat[index].teksLatin,
+            style: GoogleFonts.poppins(
+              color: primary,
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.right,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Text(
+            detailSurah.ayat[index].teksIndonesia,
+            style: GoogleFonts.poppins(
+              color: primary,
+              fontSize: 16,
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  void _showBookmarkDialog(
+      BuildContext context, DetailSurah detailSurah, int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: bottom,
+          title: Text(
+            'BOOKMARK',
+            style:
+                GoogleFonts.poppins(color: text, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Last Read atau Add Note",
+                style: GoogleFonts.poppins(
+                    color: primary, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(height: 14),
+              TextFormField(
+                controller: detailcontroller.noteController,
+                decoration: const InputDecoration(
+                  labelText: 'Tambahkan Catatan',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(orange)),
+              onPressed: () async {
+                await detailcontroller.addBookmark(true, detailSurah, index);
+                homeController.update();
+              },
+              child: Text(
+                'Last Read',
+                style: GoogleFonts.poppins(
+                    color: text, fontWeight: FontWeight.w500),
+              ),
+            ),
+            ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(orange)),
+              onPressed: () {
+                detailcontroller.addBookmark(false, detailSurah, index);
+              },
+              child: Text(
+                'Add Note',
+                style: GoogleFonts.poppins(
+                    color: text, fontWeight: FontWeight.w500),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
