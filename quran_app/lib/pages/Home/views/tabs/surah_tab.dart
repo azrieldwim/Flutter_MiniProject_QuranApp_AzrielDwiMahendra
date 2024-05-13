@@ -2,13 +2,13 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quran_app/data/models/surah.dart';
-import 'package:quran_app/pages/Home/controllers/surah_controller.dart';
+import 'package:quran_app/models/surah.dart';
+import 'package:quran_app/pages/Home/controllers/home_controller.dart';
 import 'package:quran_app/routes/route_name.dart';
 import 'package:quran_app/themes/colors.dart';
 
 class SurahTab extends StatelessWidget {
-  final controller = Get.put(SurahController());
+  final controller = Get.put(HomeController());
   SurahTab({super.key});
 
   @override
