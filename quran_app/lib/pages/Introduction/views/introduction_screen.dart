@@ -20,6 +20,7 @@ class IntroductionScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
+                  // key: const Key('TittleQuranApps'),
                   'Quran Apps',
                   style: GoogleFonts.poppins(
                     color: text,
@@ -31,6 +32,7 @@ class IntroductionScreen extends StatelessWidget {
                   height: 16,
                 ),
                 Text(
+                  // key: const Key('SubtittleQuranApps'),
                   'Learn Quran and\nRecite once everyday',
                   style: GoogleFonts.poppins(
                     color: primary,
@@ -42,6 +44,7 @@ class IntroductionScreen extends StatelessWidget {
                   height: 48,
                 ),
                 Stack(
+                  // key: const Key('Animasi'),
                   clipBehavior: Clip.none,
                   children: [
                     Container(
@@ -61,7 +64,7 @@ class IntroductionScreen extends StatelessWidget {
                       child: Center(
                         child: GestureDetector(
                           behavior: HitTestBehavior.opaque,
-                          onTap: () => Get.offAllNamed(RouteName.home),                      
+                          onTap: () => Get.offAllNamed(RouteName.signup),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 40,
@@ -72,6 +75,7 @@ class IntroductionScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: Text(
+                              // key: const Key('ButtonGetStarted'),
                               'Get Started',
                               style: GoogleFonts.poppins(
                                 fontSize: 18,
@@ -84,9 +88,7 @@ class IntroductionScreen extends StatelessWidget {
                     )
                   ],
                 ),
-                const SizedBox(
-                  height: 52,
-                ),
+                const SizedBox(height: 16),
               ],
             ),
           ),
