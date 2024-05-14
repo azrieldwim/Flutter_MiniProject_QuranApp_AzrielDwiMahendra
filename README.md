@@ -48,4 +48,4 @@ Daftar tools yang saya gunakan adalah:
 - Flutter framework
 - API Al-Quran
 - SupaBase
-- Library dari flutter : http, google_fonts, flutter_svg, lottie, path_provider, path, get, supabase_flutter, envied, envied_generator dan build_runner.
+- Library dari flutter : http, google_fonts, flutter_svg, lottie, path_provider, path, get, supabase_flutter, envied, envied_generator, build_runner dan dash_chat_2.
