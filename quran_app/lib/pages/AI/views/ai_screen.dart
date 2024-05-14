@@ -1,3 +1,4 @@
+import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:quran_app/themes/colors.dart';
 
 class AiScreen extends StatelessWidget {
   AiScreen({super.key});
+
   final aiController = Get.put(AiController());
 
   @override
@@ -27,76 +29,38 @@ class AiScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: _bottomNavigationBar(),
-      body: Container(
-        decoration: BoxDecoration(color: background),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            GetBuilder<AiController>(
-              builder: (controller) => Expanded(
-                child: ListView.builder(
-                  itemCount: controller.responses.length,
-                  itemBuilder: (context, index) {
-                    final response = controller.responses[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 16.0),
-                      child: Container(
-                        padding: const EdgeInsets.all(12.0),
-                        decoration: BoxDecoration(
-                          color: banner,
-                          borderRadius: BorderRadius.circular(12.0),
+      body: GetBuilder<AiController>(
+        builder: (controller) {
+          return Column(
+            children: [
+              Expanded(
+                child: DashChat(
+                  currentUser: controller.myself,
+                  messages: controller.responses,
+                  messageOptions: MessageOptions(
+                    messagePadding: const EdgeInsets.all(12),
+                    containerColor: banner,
+                    showTime: true,
+                  ),
+                  inputOptions: InputOptions(
+                    autocorrect: false,
+                    inputDecoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Text(
-                          response,
-                          style: const TextStyle(fontSize: 16.0),
-                        ),
-                      ),
-                    );
+                        label: Text(
+                          'Input Pertanyaan Tafsir Surat Al-Quran',
+                          style: GoogleFonts.poppins(fontSize: 14),
+                        )),
+                  ),
+                  onSend: (message) {
+                    controller.submitForm(message);
                   },
                 ),
               ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      style: TextStyle(color: text),
-                      controller: aiController.userInput,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          label: Text(
-                            'Input Pertanyaan Tafsir Surat Al-Quran',
-                            style: GoogleFonts.poppins(fontSize: 14),
-                          )),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 6,
-                  ),
-                  IconButton(
-                    padding: const EdgeInsets.all(12),
-                    iconSize: 30,
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(primary),
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        shape: MaterialStateProperty.all(const CircleBorder())),
-                    onPressed: () {
-                      aiController.submitForm();
-                    },
-                    icon: const Icon(Icons.send),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+            ],
+          );
+        },
       ),
     );
   }
